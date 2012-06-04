@@ -25,7 +25,9 @@ var usedServices = [
    'Twitter',
    'LinkedIn',
    'FitBit',
-   'Email'
+   'WordPress',
+   'GContacts',
+   'GitHub'
 ];
 
 var oa = new OAuth2(clientId, clientSecret, apiBaseUrl);
