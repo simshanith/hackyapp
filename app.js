@@ -118,6 +118,7 @@ app.get('/callback', function(req, res) {
       code: req.param('code')
    };
 
+   // Exchange the OAuth2 code for an access_token
    request.post({
       uri: sprintf('%s/oauth/access_token', apiBaseUrl),
       body: querystring.stringify(data),
@@ -131,8 +132,10 @@ app.get('/callback', function(req, res) {
          return res.send(parseErr, 500);
       }
 
+      // Save the access_token for future API requests
       req.session.access_token = body.access_token;
 
+      // Fetch the user's service profile data
       getProtectedResource('/profiles', req.session, function(err, profilesBody) {
          try {
             profilesBody = JSON.parse(profilesBody);
