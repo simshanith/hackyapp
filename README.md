@@ -1,4 +1,4 @@
-singly-nodejs-example
-=====================
+nodejs_express_skeleton
+=======================
 
-An example app for accessing the Singly API written in node.js.
+An example node.js/Express skeleton for accessing the Singly API.
