@@ -1,12 +1,12 @@
 {
-   "name": "singly-nodejs-example",
+   "name": "nodejs_express_skeleton",
    "version": "0.0.1",
    "dependencies": {
       "ejs": "*",
-      "express": "*",
+      "express": "2.5.x",
       "oauth": "*",
       "querystring": "*",
-      "request": "*",
+      "request": "2.9.x",
       "sprintf": "*"
    }
 }
