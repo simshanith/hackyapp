@@ -27,7 +27,11 @@ var usedServices = [
    'FitBit',
    'WordPress',
    'GContacts',
-   'GitHub'
+   'GitHub',
+   'Gmail',
+   'Dropbox',
+   'Google',
+   'RunKeeper'
 ];
 
 var oa = new OAuth2(clientId, clientSecret, apiBaseUrl);
@@ -108,6 +112,16 @@ app.get('/', function(req, res) {
    res.render('index', {
       services: services,
       session: req.session
+   });
+});
+
+app.get('/apiauth', function(req, res) {
+  if(!req.session || !req.session.profiles) return res.send("not logged in, temp dead end, TODO",400);
+   res.render('apiauth', {
+     callback: req.query.callback,
+     account: req.session.profiles.id,
+     validation: require('crypto').createHash('md5').update(clientSecret+req.session.profiles.id).digest('hex'),
+     session: req.session
    });
 });
 
