@@ -1,20 +1,31 @@
-// USAGE: node app.js <clientID> <clientSecret> [exampleHost] [apiHost]
+// USAGE:
+// if you have foreman (you should!) set you .env file with
+// SINGLY_CLIENT_ID and SINGLY_CLIENT_SECRET and then run:
+//
+// foreman start
+//
+// otherwise set SINGLY_CLIENT_ID and SINGLY_CLIENT_SECRET and run:
+//
+// node app
 
 var express = require('express');
 var querystring = require('querystring');
 var request = require('request');
 var sprintf = require('sprintf').sprintf;
-var OAuth2 = require('oauth').OAuth2;
 
 // The port that this express app will listen on
-var port = 8043;
+var port = 7464;
 
 // Your client ID and secret from http://dev.singly.com/apps
-var clientId = process.argv[2] || '';
-var clientSecret = process.argv[3] || '';
+var clientId = process.env.SINGLY_CLIENT_ID;
+var clientSecret = process.env.SINGLY_CLIENT_SECRET;
 
-var hostBaseUrl = process.argv[4] || 'http://localhost:' + port;
-var apiBaseUrl = process.argv[5] || 'https://api.singly.com';
+var hostBaseUrl = 'http://localhost:' + port;
+var apiBaseUrl = 'https://api.singly.com';
+
+// require and initialize the singly module
+var singly = require('singly')(clientId, clientSecret, hostBaseUrl + '/callback');
+
 
 // Pick a secret to secure your session storage
 var sessionSecret = '42';
@@ -36,13 +47,6 @@ var usedServices = [
    'RunKeeper'
 ];
 
-var oa = new OAuth2(clientId, clientSecret, apiBaseUrl);
-
-// A convenience method that takes care of adding the access token to requests
-function getProtectedResource(path, session, callback) {
-  oa.getProtectedResource(apiBaseUrl + path, session.access_token, callback);
-}
-
 // Given the name of a service and the array of profiles, return a link to that
 // service that's styled appropriately (i.e. show a link or a checkmark).
 function getLink(prettyName, profiles, token) {
@@ -54,17 +58,7 @@ function getLink(prettyName, profiles, token) {
     return sprintf('<span class="check">&#10003;</span> <a href="%s/services/%s?access_token=%s">%s</a>', apiBaseUrl, service, token, prettyName);
   }
 
-  // This flow is documented here: http://dev.singly.com/authorization
-  var queryString = querystring.stringify({
-    client_id: clientId,
-      redirect_uri: sprintf('%s/callback', hostBaseUrl),
-      service: service
-  });
-
-  return sprintf('<a href="%s/oauth/authorize?%s">%s</a>',
-      apiBaseUrl,
-      queryString,
-      prettyName);
+  return '<a href="' + singly.getAuthorizeURL(service) + '">' + prettyName + "</a>";
 }
 
 // Create an HTTP server
@@ -88,11 +82,6 @@ app.configure('development', function() {
     dumpExceptions: true,
     showStack: true
   }));
-});
-
-// ... but not in production
-app.configure('production', function() {
-  app.use(express.errorHandler());
 });
 
 // Use ejs instead of jade because HTML is easy
@@ -129,38 +118,15 @@ app.get('/apiauth', function(req, res) {
 });
 
 app.get('/callback', function(req, res) {
-  var data = {
-    client_id: clientId,
-  client_secret: clientSecret,
-  code: req.param('code')
-  };
-
+  var code = req.param('code');
   // Exchange the OAuth2 code for an access_token
-  request.post({
-    uri: sprintf('%s/oauth/access_token', apiBaseUrl),
-    body: querystring.stringify(data),
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded'
-    }
-  }, function (err, resp, body) {
-    try {
-      body = JSON.parse(body);
-    } catch(parseErr) {
-      return res.send(parseErr, 500);
-    }
-
+  singly.getAccessToken(code, function (err, accessToken) {
     // Save the access_token for future API requests
-    req.session.access_token = body.access_token;
+    req.session.access_token = accessToken;
 
     // Fetch the user's service profile data
-    getProtectedResource('/profiles', req.session, function(err, profilesBody) {
-      try {
-        profilesBody = JSON.parse(profilesBody);
-      } catch(parseErr) {
-        return res.send(parseErr, 500);
-      }
-
-      req.session.profiles = profilesBody;
+    singly.apiCall('/profiles', {access_token:accessToken}, function(err, profiles) {
+      req.session.profiles = profiles;
 
       res.redirect('/');
     });
