@@ -14,14 +14,14 @@ var request = require('request');
 var sprintf = require('sprintf').sprintf;
 
 // The port that this express app will listen on
-var port = 7464;
+var port = process.env.PORT || 7464;
 
 // Your client ID and secret from http://dev.singly.com/apps
 var clientId = process.env.SINGLY_CLIENT_ID;
 var clientSecret = process.env.SINGLY_CLIENT_SECRET;
 
-var hostBaseUrl = 'http://localhost:' + port;
-var apiBaseUrl = 'https://api.singly.com';
+var hostBaseUrl = (process.env.HOST || 'http://localhost:') + port;
+var apiBaseUrl = process.env.API_HOST || 'https://api.singly.com';
 
 // require and initialize the singly module
 var singly = require('singly')(clientId, clientSecret, hostBaseUrl + '/callback');
