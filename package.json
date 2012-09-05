@@ -3,10 +3,11 @@
    "version": "0.0.2",
    "dependencies": {
       "ejs": "*",
-      "express": "2.5.x",
+      "express": "",
       "querystring": "*",
       "request": "2.9.x",
       "sprintf": "*",
-      "singly":"0.0.0"
+      "singly": "0.0.0",
+      "express-singly": "*"
    }
 }
