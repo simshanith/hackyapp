@@ -1,12 +1,13 @@
 // USAGE:
-// if you have foreman (you should!) set you .env file with
+//
+// If you have foreman (you should!) set you .env file with
 // SINGLY_CLIENT_ID and SINGLY_CLIENT_SECRET and then run:
 //
-// foreman start
+// $ foreman start
 //
-// otherwise set SINGLY_CLIENT_ID and SINGLY_CLIENT_SECRET and run:
+// Otherwise set SINGLY_CLIENT_ID and SINGLY_CLIENT_SECRET and run:
 //
-// node app
+// $ node app
 
 var express = require('express');
 var querystring = require('querystring');
@@ -20,31 +21,30 @@ var port = process.env.PORT || 7464;
 var clientId = process.env.SINGLY_CLIENT_ID;
 var clientSecret = process.env.SINGLY_CLIENT_SECRET;
 
-var hostBaseUrl = (process.env.HOST || 'http://localhost:') + port;
+var hostBaseUrl = (process.env.HOST || 'http://localhost:' + port);
 var apiBaseUrl = process.env.API_HOST || 'https://api.singly.com';
 
-// require and initialize the singly module
+// Require and initialize the singly module
 var singly = require('singly')(clientId, clientSecret, hostBaseUrl + '/callback');
-
 
 // Pick a secret to secure your session storage
 var sessionSecret = '42';
 
 var usedServices = [
+   'Dropbox',
    'Facebook',
-   'foursquare',
-   'Instagram',
-   'Tumblr',
-   'Twitter',
-   'LinkedIn',
    'FitBit',
-   'WordPress',
+   'foursquare',
    'GContacts',
    'GitHub',
    'Gmail',
-   'Dropbox',
    'Google',
-   'RunKeeper'
+   'Instagram',
+   'LinkedIn',
+   'RunKeeper',
+   'Tumblr',
+   'Twitter',
+   'WordPress'
 ];
 
 // Given the name of a service and the array of profiles, return a link to that
@@ -54,11 +54,15 @@ function getLink(prettyName, profiles, token) {
 
   // If the user has a profile authorized for this service
   if (profiles && profiles[service] !== undefined) {
-    // Return a unicode checkmark so that the user doesn't try to authorize it again
-    return sprintf('<span class="check">&#10003;</span> <a href="%s/services/%s?access_token=%s">%s</a>', apiBaseUrl, service, token, prettyName);
+    // Return a unicode checkmark so that the user doesn't try
+    // to authorize it again
+    return sprintf('<span class="check">&#10003;</span> ' +
+      '<a href="%s/services/%s?accessToken=%s">%s</a>',
+      apiBaseUrl, service, token, prettyName);
   }
 
-  return '<a href="' + singly.getAuthorizeURL(service) + '">' + prettyName + "</a>";
+  return sprintf('<a href="%s">%s</a>', singly.getAuthorizeURL(service),
+    prettyName);
 }
 
 // Create an HTTP server
@@ -67,7 +71,7 @@ var app = express.createServer();
 // Setup for the express web framework
 app.configure(function() {
   app.use(express.logger());
-  app.use(express.static(__dirname + '/public'));
+  app.use(express['static'](__dirname + '/public'));
   app.use(express.bodyParser());
   app.use(express.cookieParser());
   app.use(express.session({
@@ -95,7 +99,7 @@ app.get('/', function(req, res) {
   for (i = 0; i < usedServices.length; i++) {
     services.push({
       name: usedServices[i],
-      link: getLink(usedServices[i], req.session.profiles, req.session.access_token)
+      link: getLink(usedServices[i], req.session.profiles, req.session.accessToken)
     });
   }
 
@@ -106,26 +110,31 @@ app.get('/', function(req, res) {
   });
 });
 
-// this is experimental so you can ignore it, see https://singly.com/write
+// This is experimental so you can ignore it, see https://singly.com/write
 app.get('/apiauth', function(req, res) {
-  if(!req.session || !req.session.profiles) return res.send("not logged in, temp dead end, TODO",400);
-   res.render('apiauth', {
-     callback: req.query.callback,
-     account: req.session.profiles.id,
-     validation: require('crypto').createHash('md5').update(clientSecret+req.session.profiles.id).digest('hex'),
-     session: req.session
-   });
+  if (!req.session ||
+    !req.session.profiles) {
+    return res.send("not logged in, temp dead end, TODO", 400);
+  }
+
+  res.render('apiauth', {
+    callback: req.query.callback,
+    account: req.session.profiles.id,
+    validation: require('crypto').createHash('md5').update(clientSecret +
+      req.session.profiles.id).digest('hex'),
+    session: req.session
+  });
 });
 
 app.get('/callback', function(req, res) {
   var code = req.param('code');
-  // Exchange the OAuth2 code for an access_token
+  // Exchange the OAuth2 code for an access token
   singly.getAccessToken(code, function (err, accessToken) {
-    // Save the access_token for future API requests
-    req.session.access_token = accessToken;
+    // Save the accessToken for future API requests
+    req.session.accessToken = accessToken;
 
     // Fetch the user's service profile data
-    singly.apiCall('/profiles', {access_token:accessToken}, function(err, profiles) {
+    singly.apiCall('/profiles', { access_token: accessToken }, function(err, profiles) {
       req.session.profiles = profiles;
 
       res.redirect('/');
