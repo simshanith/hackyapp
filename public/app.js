@@ -28,15 +28,17 @@ $(function() {
 
    // Get the user's profiles
    singly.get('/profiles', null, function(profiles) {
-      _.each(profiles.all, function(profile) {
-         $('#profiles').append(sprintf('<li><strong>Linked profile:</strong> %s</li>', profile));
+      _.each(Object.keys(profiles), function(profile) {
+         if(profile !== 'id') {
+            $('#profiles').append(sprintf('<li><strong>Linked profile:</strong> %s</li>', profile));
+         }
       });
    });
 
-   // Get the 5 latest items from the user's Twitter feed
-   singly.get('/services/twitter/timeline', { limit: 5 }, function(tweets) {
-      _.each(tweets, function(tweet) {
-         $('#twitter').append(sprintf('<li><strong>Tweet:</strong> %s</li>', tweet.data.text));
+   // Get the 5 latest items from the user's statuses feed
+   singly.get('/types/statuses_feed', { limit: 5 }, function(items) {
+      _.each(items, function(item) {
+         $('#statuses').append(sprintf('<li><strong>Status:</strong> %s</li>', item.oembed.text));
       });
    });
 });
