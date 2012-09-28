@@ -7,7 +7,7 @@
       "querystring": "*",
       "request": "2.9.x",
       "sprintf": "*",
-      "singly": "0.0.0",
+      "singly": "0.0.2",
       "express-partials": "*",
       "express-singly": "*"
    }

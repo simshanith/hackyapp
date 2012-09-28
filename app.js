@@ -23,7 +23,7 @@ var clientId = process.env.SINGLY_CLIENT_ID;
 var clientSecret = process.env.SINGLY_CLIENT_SECRET;
 
 var hostBaseUrl = (process.env.HOST || 'http://localhost:' + port);
-var apiBaseUrl = process.env.API_HOST || 'https://api.singly.com';
+var apiBaseUrl = process.env.SINGLY_API_HOST || 'https://api.singly.com';
 
 // Create an HTTP server
 var app = express();
