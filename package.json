@@ -1,11 +1,11 @@
 {
    "name": "nodejs_express_skeleton",
-   "version": "0.0.3",
+   "version": "0.0.4",
    "dependencies": {
       "ejs": "*",
-      "express": "",
+      "express": "3.0.0rc4",
       "querystring": "*",
-      "request": "2.9.x",
+      "request": "2.9.203",
       "sprintf": "*",
       "express-partials": "*",
       "express-singly": "*"
