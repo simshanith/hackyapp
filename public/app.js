@@ -1,7 +1,7 @@
 /*globals accessToken:true*/
 
 // The URL of the Singly API endpoint
-var apiBaseUrl = process.env.SINGLY_API_HOST || 'https://api.singly.com';
+var apiBaseUrl = 'https://api.singly.com';
 
 // A small wrapper for getting data from the Singly API
 var singly = {
