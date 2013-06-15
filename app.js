@@ -37,9 +37,7 @@ var sessionSecret = '42';
 
 // Setup for the express web framework
 app.configure(function() {
-  // Use ejs instead of jade because HTML is easy
-  app.set('view engine', 'ejs');
-  app.use(partials());
+  app.set('view engine', 'jade');
   app.use(express.logger());
   app.use(express['static'](__dirname + '/public'));
   app.use(express.bodyParser());
@@ -62,7 +60,7 @@ app.configure('development', function() {
 });
 
 app.get('/', function(req, res) {
-  // Render out views/index.ejs, passing in the session
+  // Render out views/index.jade, passing in the session
   res.render('index', {
     session: req.session
   });
