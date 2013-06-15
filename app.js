@@ -13,6 +13,11 @@ var express = require('express');
 var querystring = require('querystring');
 var request = require('request');
 var sprintf = require('sprintf').sprintf;
+var oembed = require('oembed');
+var jade_locals = require('./jade_locals.js');
+var _ = require('lodash/dist/lodash.underscore');
+
+oembed.EMBEDLY_KEY = process.env.EMBEDLY_KEY;
 
 // The port that this express app will listen on
 var port = process.env.PORT || 7464;
@@ -34,9 +39,16 @@ var expressSingly = require('express-singly')(app, clientId, clientSecret,
 // Pick a secret to secure your session storage
 var sessionSecret = '42';
 
+// Jade Locals Middleware wrapper.
+function wrapJadeLocals(req, res, next) {
+  _.defaults(res.locals, jade_locals);
+  next();
+}
+
 // Setup for the express web framework
 app.configure(function() {
   app.set('view engine', 'jade');
+  app.use(wrapJadeLocals);
   app.use(require('stylus').middleware({ src: __dirname + '/public' }));
   app.use(express.logger());
   app.use(express['static'](__dirname + '/public'));

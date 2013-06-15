@@ -1,36 +1,36 @@
 extends layout
 
 block mainContent
-	p
-		| Register with one or more of these services:</p>
+  p
+    | Register with one or more of these services:</p>
 
-	ul#auth
-		li!= authorizationLink('dropbox', 'Dropbox')
-		li!= authorizationLink('facebook', 'Facebook')
-		li!= authorizationLink('fitbit', 'FitBit')
-		li!= authorizationLink('foursquare', 'foursquare')
-		li!= authorizationLink('github', 'GitHub')
-		li!= authorizationLink('gmail', 'Gmail')
-		li!= authorizationLink('google', 'Google')
-		li!= authorizationLink('gcontacts', 'Google Contacts')
-		li!= authorizationLink('instagram', 'Instagram')
-		li!= authorizationLink('linkedin', 'LinkedIn')
-		li!= authorizationLink('runkeeper', 'RunKeeper')
-		li!= authorizationLink('tumblr', 'Tumblr')
-		li!= authorizationLink('twitter', 'Twitter')
-		li!= authorizationLink('wordpress', 'WordPress')
+  ul#auth
+    li!= authorizationLink('dropbox', 'Dropbox')
+    li!= authorizationLink('facebook', 'Facebook')
+    li!= authorizationLink('fitbit', 'FitBit')
+    li!= authorizationLink('foursquare', 'foursquare')
+    li!= authorizationLink('github', 'GitHub')
+    li!= authorizationLink('gmail', 'Gmail')
+    li!= authorizationLink('google', 'Google')
+    li!= authorizationLink('gcontacts', 'Google Contacts')
+    li!= authorizationLink('instagram', 'Instagram')
+    li!= authorizationLink('linkedin', 'LinkedIn')
+    li!= authorizationLink('runkeeper', 'RunKeeper')
+    li!= authorizationLink('tumblr', 'Tumblr')
+    li!= authorizationLink('twitter', 'Twitter')
+    li!= authorizationLink('wordpress', 'WordPress')
 
-	#empowered
-		a(href="https://singly.com/")
-			img(src="/empowered.png")
+  #empowered
+    a(href="https://singly.com/")
+      img(src="/empowered.png")
 
-	#access-token-wrapper
-		p
-			| Here&apos;s your access token for making API calls directly:
-			input#access-token(type="text")
+  #access-token-wrapper
+    p
+      | Here&apos;s your access token for making API calls directly:
+      input#access-token(type="text")
 
-	#profiles
+  #profiles
 
-	hr/
+  hr/
 
-	#statuses
+  #statuses

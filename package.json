@@ -8,7 +8,10 @@
       "querystring": "*",
       "request": "2.9.203",
       "sprintf": "*",
-      "express-singly": "*"
+      "express-singly": "*",
+      "oembed" : "*",
+      "lodash" : "*",
+      "underscore.string" : "*"
    },
    "engines": {
      "node": "0.10.x",
