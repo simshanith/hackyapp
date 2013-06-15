@@ -13,7 +13,6 @@ var express = require('express');
 var querystring = require('querystring');
 var request = require('request');
 var sprintf = require('sprintf').sprintf;
-var partials = require('express-partials');
 
 // The port that this express app will listen on
 var port = process.env.PORT || 7464;
@@ -38,6 +37,7 @@ var sessionSecret = '42';
 // Setup for the express web framework
 app.configure(function() {
   app.set('view engine', 'jade');
+  app.use(require('stylus').middleware({ src: __dirname + '/public' }));
   app.use(express.logger());
   app.use(express['static'](__dirname + '/public'));
   app.use(express.bodyParser());

@@ -3,6 +3,7 @@
    "version": "0.0.4",
    "dependencies": {
       "jade": "*",
+      "stylus": "*",
       "express": "3.0.0rc4",
       "querystring": "*",
       "request": "2.9.203",
