@@ -29,6 +29,9 @@ h1 {
 }
 #mainContent p {
   text-align: center;
+  font-size: 22px;
+  font-family: Arial;
+  letter-spacing: 10px;
 }
 #auth {
   list-style: none;
@@ -67,6 +70,18 @@ h1 {
   background: url("/img/icons/ico-twitter.png") no-repeat 10px center #333;
   background-size: 30px;
 }
+#auth li.ico-media {
+  background: url("/img/icons/ico-media.png") no-repeat 10px center #333;
+  background-size: 30px;
+}
+#auth li.ico-find-friends {
+  background: url("/img/icons/ico-find-friends.png") no-repeat 10px center #333;
+  background-size: 30px;
+}
+#auth li.ico-share-media {
+  background: url("/img/icons/ico-share-media.png") no-repeat 10px center #333;
+  background-size: 30px;
+}
 #auth li a {
   line-height: 40px;
   font-family: Arial;
@@ -101,6 +116,11 @@ a.continue-hacking {
   text-align: center;
   text-transform: uppercase;
   max-width: 160px;
+  text-decoration: none;
+}
+a.continue-hacking:visited {
+  color: #333;
+  text-decoration: none;
 }
 a.continue-hacking:hover {
   cursor: pointer;

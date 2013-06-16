@@ -3,7 +3,7 @@ extends layout
 block mainContent
   #contain
 
-  p
+  p.dashboard-p
     | Tap Tap Tap around
 
   ul#auth
@@ -13,8 +13,5 @@ block mainContent
       a Find Friends
     li.ico-share-media
       a Share Media
-    li.ico-twitter
-      +authorizationLink('twitter', 'Twitter')
-
-  a.back-to-home
+  a.continue-hacking.back-home(href="../")
     | Square One
