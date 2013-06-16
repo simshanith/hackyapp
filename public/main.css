@@ -41,6 +41,16 @@ h1 {
   margin: 5px;
   padding: 5px;
   border-radius: 10px;
+  padding-right: 20px;
+  line-height: 40px;
+  padding-left: 58px;
+  font-family: Arial;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: #ccc;
+  text-decoration: none;
+  letter-spacing: 7px;
+  color: #00d905;
 }
 #auth li.ico-tumblr {
   background: url("/img/icons/ico-tumblr.png") no-repeat 10px center #333;
@@ -60,7 +70,6 @@ h1 {
 }
 #auth li a {
   line-height: 40px;
-  padding-left: 58px;
   font-family: Arial;
   text-transform: uppercase;
   font-size: 20px;
@@ -68,11 +77,21 @@ h1 {
   text-decoration: none;
   letter-spacing: 7px;
 }
-#auth li.check {
-  background: url("/img/icons/ico-google.png") no-repeat right center #333;
+#auth li a:hover {
+  color: #d6eb21;
+}
+#auth li .check {
+  background: url("/img/icons/ico-joined.png") no-repeat right center #333;
   background-size: 30px;
   width: 30px;
   height: 30px;
   float: right;
   padding-right: 20px;
+  line-height: 40px;
+  font-family: Arial;
+  text-transform: uppercase;
+  font-size: 20px;
+  color: #ccc;
+  text-decoration: none;
+  letter-spacing: 7px;
 }
