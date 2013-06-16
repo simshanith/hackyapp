@@ -1,6 +1,6 @@
 {
-   "name": "nodejs_express_skeleton",
-   "version": "0.0.4",
+   "name": "hackyapp",
+   "version": "0.0.1",
    "dependencies": {
       "jade": "*",
       "stylus": "*",
