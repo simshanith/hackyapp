@@ -5,7 +5,12 @@ block mainContent
 	- if (oEmbeddedContent)
 		- each song in oEmbeddedContent
 			.rdio-song
-				h3= song.title
+				h3
+					span.title= song.title
+					|  &ndash; 
+					span.artist= song.artist
+				h4
+					span.album= song.album
 				.rdio-widget
 					img(src=song.thumbnail_url)
 					!= song.html

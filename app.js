@@ -154,6 +154,13 @@ app.get('/rdio', function(req, res) {
           return trackData;
         });
         songEmbeds = _.compact(songEmbeds);
+        songEmbeds = _.map(songEmbeds, function(embed, i) {
+          var singlyRdio = body[i];
+          var songData = singlyRdio && singlyRdio.data;
+          embed.artist = songData && songData.artist;
+          embed.album  = songData && songData.album;
+          return embed;
+        });
         res.render('rdio', {oEmbeddedContent: songEmbeds});
       });
     });
@@ -162,7 +169,7 @@ app.get('/rdio', function(req, res) {
   }
 });
 
-app.get('/singly/videos', function(req, res) {
+app.get('/videos', function(req, res) {
   var token = req.session.accessToken;
   if(token) {
     singly.get('/types/videos', {limit: 25, access_token: token}, function(err, singlyResp, body) {
