@@ -1,5 +1,8 @@
-h2 Doth you grant access?
+extends layout
 
-a(href='#{callback}?account=#{account}&validation=#{validation}') BRING IT
-| or
-a(href='#{callback}?error=meh+denied') meh
+block mainContent
+	h2 Doth you grant access?
+
+	a(href='#{callback}?account=#{account}&validation=#{validation}') BRING IT
+	| or
+	a(href='#{callback}?error=meh+denied') meh

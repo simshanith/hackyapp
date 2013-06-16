@@ -13,11 +13,10 @@ var express = require('express');
 var querystring = require('querystring');
 var request = require('request');
 var sprintf = require('sprintf').sprintf;
-var oembed = require('oembed');
+
 var jade_locals = require('./jade_locals.js');
 var _ = require('lodash/dist/lodash.underscore');
 
-oembed.EMBEDLY_KEY = process.env.EMBEDLY_KEY;
 
 // The port that this express app will listen on
 var port = process.env.PORT || 7464;
@@ -40,15 +39,28 @@ var expressSingly = require('express-singly')(app, clientId, clientSecret,
 var sessionSecret = '42';
 
 // Jade Locals Middleware wrapper.
-function wrapJadeLocals(req, res, next) {
-  _.defaults(res.locals, jade_locals);
+function jadeMiddleware(req, res, next) {
+  res.locals = wrapJadeLocals(res.locals);
   next();
+}
+
+function wrapJadeLocals(locals) {
+  function wrapped(obj){
+    var extended = _.extend({}, locals(obj));
+    var withLocals =  _.defaults(extended, jade_locals);
+    return withLocals;
+  }
+
+  return _.extend(wrapped, locals);
 }
 
 // Setup for the express web framework
 app.configure(function() {
+
   app.set('view engine', 'jade');
-  app.use(wrapJadeLocals);
+  app.use(jadeMiddleware);
+
+
   app.use(require('stylus').middleware({ src: __dirname + '/public' }));
   app.use(express.logger());
   app.use(express['static'](__dirname + '/public'));
@@ -57,11 +69,15 @@ app.configure(function() {
   app.use(express.session({
     secret: sessionSecret
   }));
+
   expressSingly.configuration();
+
+
   app.use(app.router);
 });
 
 expressSingly.routes();
+
 
 // We want exceptions and stracktraces in development
 app.configure('development', function() {
