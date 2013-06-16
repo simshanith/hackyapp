@@ -31,8 +31,8 @@ var apiBaseUrl = process.env.SINGLY_API_HOST || 'https://api.singly.com';
 
 var singly = require('singly')(clientId, clientSecret, hostBaseUrl+'/callback');
 
-var oembed = require('oembed');
-oembed.EMBEDLY_KEY = process.env.EMBEDLY_KEY;
+var embedly = require('embedly');
+var EMBEDLY_KEY = process.env.EMBEDLY_KEY;
 
 // Create an HTTP server
 var app = express();
@@ -117,7 +117,8 @@ app.get('/singly/videos', function(req, res) {
 
       var deferreds = _.map(videos, returnDeferred);
       var videosDeferred = when.all(deferreds);
-
+      /*
+      new embedly(EMBEDLY_KEY);
       _.each(videos, function(videoUrl, i, videos) {
         oembed.fetch(videoUrl, {maxWidth: 600}, function(err, oEmbedResp) {
           if(err) {
@@ -135,6 +136,7 @@ app.get('/singly/videos', function(req, res) {
       function returnDeferred() {
         return new Deferred();
       }
+      */
     });
   } else {
     res.redirect('/');

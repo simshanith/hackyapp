@@ -27,10 +27,11 @@ html.no-js
       script(src='//ajax.googleapis.com/ajax/libs/jquery/1.8/jquery.min.js')
       script(src='/lib/sprintf-0.7-beta1.js')
       script(src='/lib/underscore-min.js')
-      - if (session && session.accessToken)
-        script.
-          var accessToken = '#{session.accessToken}';
-      script(src='/app.js')
+      //-
+        - if (session && session.accessToken)
+          script.
+            var accessToken = '#{session.accessToken}';
+        script(src='/app.js')
   body
     block beforeWrapper
     #wrapper

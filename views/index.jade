@@ -15,31 +15,3 @@ block mainContent
       +authorizationLink('tumblr', 'Tumblr')
     li.ico-twitter
       +authorizationLink('twitter', 'Twitter')
-
-
-  #access-token-wrapper
-    p
-      | Register with one or more of these services:
-
-    ul#auth
-      li.ico-facebook
-        +authorizationLink('facebook', 'Facebook')
-      li.ico-google
-        +authorizationLink('google', 'Google')
-      li.ico-tumblr
-        +authorizationLink('tumblr', 'Tumblr')
-      li.ico-twitter
-        +authorizationLink('twitter', 'Twitter')
-
-    #empowered
-      a(href="https://singly.com/")
-        img(src="/empowered.png")
-
-    #access-token-wrapper
-      p
-        | Here&apos;s your access token for making API calls directly:
-        input#access-token(type="text")
-
-    #profiles
-    hr/
-    #statuses
