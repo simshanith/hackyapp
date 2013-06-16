@@ -2,6 +2,22 @@ extends layout
 
 block mainContent
   #contain
+
+  p
+    | Hack with one of the following accounts
+
+  ul#auth
+    li.ico-facebook
+      +authorizationLink('facebook', 'Facebook')
+    li.ico-google
+      +authorizationLink('google', 'Google')
+    li.ico-tumblr
+      +authorizationLink('tumblr', 'Tumblr')
+    li.ico-twitter
+      +authorizationLink('twitter', 'Twitter')
+
+
+  #access-token-wrapper
     p
       | Register with one or more of these services:
 
