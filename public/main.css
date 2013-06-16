@@ -56,3 +56,6 @@ h1 {
   color: #ccc;
   text-decoration: none;
 }
+#auth li.check {
+  background: #0f0;
+}
