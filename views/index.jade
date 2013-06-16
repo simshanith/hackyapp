@@ -3,7 +3,7 @@ extends layout
 block mainContent
   #conatin
   p
-    | Register with one or more of these services:</p>
+    | Hack with one of the following accounts
 
   ul#auth
     li.ico-facebook
@@ -15,9 +15,6 @@ block mainContent
     li.ico-twitter
       +authorizationLink('twitter', 'Twitter')
 
-  #empowered
-    a(href="https://singly.com/")
-      img(src="/empowered.png")
 
   #access-token-wrapper
     p
