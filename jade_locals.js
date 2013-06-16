@@ -2,9 +2,6 @@ var _ = require('lodash/dist/lodash.underscore');
 _.str = require('underscore.string');
 _.mixin(_.str.exports());
 
-var oembed = require('oembed');
-oembed.EMBEDLY_KEY = process.env.EMBEDLY_KEY;
-
 _.mixin({
   chunk: function(arr, chunkSize){
     // works with Objects (chunks values)

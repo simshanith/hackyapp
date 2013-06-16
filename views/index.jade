@@ -1,31 +1,29 @@
 extends layout
 
 block mainContent
-  #conatin
-  p
-    | Register with one or more of these services:</p>
-
-  ul#auth
-    li.ico-facebook
-      +authorizationLink('facebook', 'Facebook')
-    li.ico-google
-      +authorizationLink('google', 'Google')
-    li.ico-tumblr
-      +authorizationLink('tumblr', 'Tumblr')
-    li.ico-twitter
-      +authorizationLink('twitter', 'Twitter')
-
-  #empowered
-    a(href="https://singly.com/")
-      img(src="/empowered.png")
-
-  #access-token-wrapper
+  #contain
     p
-      | Here&apos;s your access token for making API calls directly:
-      input#access-token(type="text")
+      | Register with one or more of these services:
 
-  #profiles
+    ul#auth
+      li.ico-facebook
+        +authorizationLink('facebook', 'Facebook')
+      li.ico-google
+        +authorizationLink('google', 'Google')
+      li.ico-tumblr
+        +authorizationLink('tumblr', 'Tumblr')
+      li.ico-twitter
+        +authorizationLink('twitter', 'Twitter')
 
-  hr/
+    #empowered
+      a(href="https://singly.com/")
+        img(src="/empowered.png")
 
-  #statuses
+    #access-token-wrapper
+      p
+        | Here&apos;s your access token for making API calls directly:
+        input#access-token(type="text")
+
+    #profiles
+    hr/
+    #statuses

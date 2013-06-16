@@ -8,8 +8,10 @@
       "querystring": "*",
       "request": "2.9.203",
       "sprintf": "*",
+      "singly" : "*",
       "express-singly": "*",
-      "oembed" : "*",
+      "embedly" : "*",
+      "promised-io" : "*",
       "lodash" : "*",
       "underscore.string" : "*"
    },

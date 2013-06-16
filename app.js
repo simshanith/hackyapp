@@ -16,7 +16,8 @@ var sprintf = require('sprintf').sprintf;
 
 var jade_locals = require('./jade_locals.js');
 var _ = require('lodash/dist/lodash.underscore');
-
+var when = require("promised-io/promise");
+var Deferred = when.Deferred;
 
 // The port that this express app will listen on
 var port = process.env.PORT || 7464;
@@ -27,6 +28,11 @@ var clientSecret = process.env.SINGLY_CLIENT_SECRET;
 
 var hostBaseUrl = (process.env.HOST || 'http://localhost:' + port);
 var apiBaseUrl = process.env.SINGLY_API_HOST || 'https://api.singly.com';
+
+var singly = require('singly')(clientId, clientSecret, hostBaseUrl+'/callback');
+
+var oembed = require('oembed');
+oembed.EMBEDLY_KEY = process.env.EMBEDLY_KEY;
 
 // Create an HTTP server
 var app = express();
@@ -92,6 +98,47 @@ app.get('/', function(req, res) {
   res.render('index', {
     session: req.session
   });
+});
+
+app.get('/singly/videos', function(req, res) {
+  var token = req.session.accessToken;
+  if(token) {
+    singly.get('/types/videos', {limit: 5, access_token: token}, function(err, singlyResp, body) {
+      if(err){
+        console.log('Singly Video Error:', err);
+        res.redirect('/');
+        return;
+      }
+      var videos = _.compact(_.map(body, function(videoEntry) {
+        return videoEntry.data && videoEntry.data.link;
+      }));
+
+      console.log('VIDEOS::::',videos);
+
+      var deferreds = _.map(videos, returnDeferred);
+      var videosDeferred = when.all(deferreds);
+
+      _.each(videos, function(videoUrl, i, videos) {
+        oembed.fetch(videoUrl, {maxWidth: 600}, function(err, oEmbedResp) {
+          if(err) {
+            deferreds[i].reject(err);
+          } else {
+            deferreds[i].resolve(oEmbedResp);
+          }
+        });
+      });
+
+      videosDeferred.then(function(results) {
+        res.render('oembed', {oEmbeddedContent: JSON.stringify(results)});
+      });
+
+      function returnDeferred() {
+        return new Deferred();
+      }
+    });
+  } else {
+    res.redirect('/');
+  }
 });
 
 app.listen(port);
