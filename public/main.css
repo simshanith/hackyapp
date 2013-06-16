@@ -10,23 +10,34 @@ h1 {
 .clearboth {
   clear: both;
 }
+#header {
+  margin: 20px auto;
+}
 .headerSection {
   margin: 0 auto;
-  width: 457px;
+  max-width: 320px;
 }
 .headerSection h1 {
-  line-height: 110px;
+  line-height: 72px;
   float: left;
-  padding-right: 90px;
+  padding-right: 19px;
   font-weight: lighter;
-  letter-spacing: 8px;
+  letter-spacing: 5px;
+}
+.headerSection img {
+  width: 93px;
+}
+#mainContent p {
+  text-align: center;
 }
 #auth {
   list-style: none;
+  max-width: 320px;
+  display: block;
+  padding: 0;
+  margin: 0 auto;
 }
 #auth li {
-  width: 500px;
-  height: 30px;
   margin: 5px;
   padding: 5px;
   border-radius: 10px;
@@ -48,14 +59,20 @@ h1 {
   background-size: 30px;
 }
 #auth li a {
-  line-height: 30px;
-  padding-left: 70px;
+  line-height: 40px;
+  padding-left: 58px;
   font-family: Arial;
   text-transform: uppercase;
-  font-size: 14px;
+  font-size: 20px;
   color: #ccc;
   text-decoration: none;
+  letter-spacing: 7px;
 }
 #auth li.check {
-  background: #0f0;
+  background: url("/img/icons/ico-google.png") no-repeat right center #333;
+  background-size: 30px;
+  width: 30px;
+  height: 30px;
+  float: right;
+  padding-right: 20px;
 }
