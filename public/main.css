@@ -17,12 +17,16 @@ h1 {
   margin: 0 auto;
   max-width: 320px;
 }
-.headerSection h1 {
+.headerSection a {
+  color: #333;
+}
+.headerSection a h1 {
   line-height: 72px;
   float: left;
   padding-right: 19px;
   font-weight: lighter;
   letter-spacing: 5px;
+  color: #333;
 }
 .headerSection img {
   width: 93px;
