@@ -28,7 +28,7 @@ html.no-js
       script(src='/lib/sprintf-0.7-beta1.js')
       script(src='/lib/underscore-min.js')
       script.
-        var accessToken = '#{session.accessToken}';
+        var accessToken = '!{session.accessToken}';
       script(src='/app.js')
   body
     block beforeWrapper
