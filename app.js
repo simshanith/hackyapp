@@ -111,7 +111,7 @@ app.get('/dashboard', function(req, res) {
 app.get('/rdio', function(req, res) {
   var token = req.session.accessToken;
   if (token) {
-    singly.get('/services/rdio/collection', {limit: 10, access_token: token}, function(err, singlyResp, body) {
+    singly.get('/services/rdio/collection', {limit: 50, access_token: token}, function(err, singlyResp, body) {
       if(err){
         console.log('Singly Rdio Error:', err);
         res.redirect('/');
@@ -129,7 +129,7 @@ app.get('/rdio', function(req, res) {
 
       _.each(songs, function(trackUrl, i) {
         var url = 'http://www.rdio.com/api/oembed/';
-        var params = {format: 'json', url: trackUrl};
+        var params = {format: 'json', url: trackUrl, maxwidth: 320};
         url += '?'+querystring.stringify(params);
 
         request(url, function(err, rdioResp, oEmbedData) {
@@ -161,7 +161,7 @@ app.get('/rdio', function(req, res) {
           embed.album  = songData && songData.album;
           return embed;
         });
-        res.render('rdio', {oEmbeddedContent: songEmbeds});
+        res.render('rdio', {oEmbeddedContent: _.shuffle(songEmbeds)});
       });
     });
   } else {
@@ -189,7 +189,7 @@ app.get('/videos', function(req, res) {
 
       new embedly({key: EMBEDLY_KEY}, function(err, api) {
         _.each(videos, function(videoUrl, i, videos) {
-          api.oembed({url:videoUrl, maxwidth: 600}, function(err, oEmbedResp) {
+          api.oembed({url:videoUrl, maxwidth: 320}, function(err, oEmbedResp) {
             if(err) {
               deferreds[i].reject(err);
             } else {
