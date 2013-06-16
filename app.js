@@ -103,40 +103,46 @@ app.get('/', function(req, res) {
 app.get('/singly/videos', function(req, res) {
   var token = req.session.accessToken;
   if(token) {
-    singly.get('/types/videos', {limit: 5, access_token: token}, function(err, singlyResp, body) {
+    singly.get('/types/videos', {limit: 25, access_token: token}, function(err, singlyResp, body) {
       if(err){
         console.log('Singly Video Error:', err);
         res.redirect('/');
         return;
       }
       var videos = _.compact(_.map(body, function(videoEntry) {
-        return videoEntry.data && videoEntry.data.link;
+        return videoEntry.data && videoEntry.oembed.url;
       }));
 
       console.log('VIDEOS::::',videos);
 
       var deferreds = _.map(videos, returnDeferred);
       var videosDeferred = when.all(deferreds);
-      /*
-      new embedly(EMBEDLY_KEY);
-      _.each(videos, function(videoUrl, i, videos) {
-        oembed.fetch(videoUrl, {maxWidth: 600}, function(err, oEmbedResp) {
-          if(err) {
-            deferreds[i].reject(err);
-          } else {
-            deferreds[i].resolve(oEmbedResp);
-          }
+
+      new embedly({key: EMBEDLY_KEY}, function(err, api) {
+        _.each(videos, function(videoUrl, i, videos) {
+          api.oembed({url:videoUrl}, function(err, oEmbedResp) {
+            if(err) {
+              deferreds[i].reject(err);
+            } else {
+              deferreds[i].resolve(oEmbedResp);
+            }
+          });
         });
       });
 
       videosDeferred.then(function(results) {
-        res.render('oembed', {oEmbeddedContent: JSON.stringify(results)});
+
+        var html = _.map(results, function(videoEntry) {
+          var obj = _.first(videoEntry);
+          return obj && obj.html;
+        });
+        res.render('oembed', {oEmbeddedContent: html});
       });
 
       function returnDeferred() {
         return new Deferred();
       }
-      */
+
     });
   } else {
     res.redirect('/');
