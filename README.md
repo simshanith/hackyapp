@@ -1,4 +1,10 @@
-nodejs_express_skeleton
-=======================
+# Hacky App
+http://hacky.blkblnkt.com
 
-An example node.js/Express skeleton for accessing the Singly API.
+A fun project for Hack the Midwest 2013.
+
+Node.JS + Express + Jade + Stylus
+
+Running on Heroku.
+
+Started with nodejs_express_skeleton from Singly.
