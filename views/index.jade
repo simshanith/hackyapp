@@ -1,38 +1,19 @@
 extends layout
 
 block mainContent
+  #conatin
   p
     | Register with one or more of these services:</p>
 
   ul#auth
-    li
-      +authorizationLink('dropbox', 'Dropbox')
-    li
+    li.ico-facebook
       +authorizationLink('facebook', 'Facebook')
-    li
-      +authorizationLink('fitbit', 'FitBit')
-    li
-      +authorizationLink('foursquare', 'foursquare')
-    li
-      +authorizationLink('github', 'GitHub')
-    li
-      +authorizationLink('gmail', 'Gmail')
-    li
+    li.ico-google
       +authorizationLink('google', 'Google')
-    li
-      +authorizationLink('gcontacts', 'Google Contacts')
-    li
-      +authorizationLink('instagram', 'Instagram')
-    li
-      +authorizationLink('linkedin', 'LinkedIn')
-    li
-      +authorizationLink('runkeeper', 'RunKeeper')
-    li
+    li.ico-tumblr
       +authorizationLink('tumblr', 'Tumblr')
-    li
+    li.ico-twitter
       +authorizationLink('twitter', 'Twitter')
-    li
-      +authorizationLink('wordpress', 'WordPress')
 
   #empowered
     a(href="https://singly.com/")

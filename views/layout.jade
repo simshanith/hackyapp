@@ -20,7 +20,7 @@ html.no-js
     meta(name='MobileOptimized', content='width')
     meta(name='format-detection', content='telephone=no')
     block stylesheets
-      link(rel='stylesheet', href='/styles.css')
+      link(rel='stylesheet', href='/main.css')
     block favicons
     meta(name='viewport', content='width=device-width, maximum-scale=1.0, target-densityDpi=320dpi')
     block headScripts
@@ -35,8 +35,9 @@ html.no-js
     #wrapper
       header#header
         block header
-          h1
-            a(href='/') Singly node.js Example
+          .headerSection
+              h1 Hacky App
+              img(src='img/logo.png')
       section#mainContent
         block mainContent
       footer#footer
