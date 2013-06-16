@@ -19,6 +19,10 @@ var _ = require('lodash/dist/lodash.underscore');
 var when = require("promised-io/promise");
 var Deferred = when.Deferred;
 
+function returnDeferred() {
+  return new Deferred();
+}
+
 // The port that this express app will listen on
 var port = process.env.PORT || 7464;
 
@@ -104,6 +108,60 @@ app.get('/dashboard', function(req, res) {
   res.render('dashboard', {});
 });
 
+app.get('/rdio', function(req, res) {
+  var token = req.session.accessToken;
+  if (token) {
+    singly.get('/services/rdio/collection', {limit: 10, access_token: token}, function(err, singlyResp, body) {
+      if(err){
+        console.log('Singly Rdio Error:', err);
+        res.redirect('/');
+        return;
+      }
+
+      var songs = _.compact(_.map(body, function(track) {
+        return track.data && track.data.embedUrl;
+      }));
+
+      console.log(body);
+
+      var deferreds = _.map(songs, returnDeferred);
+      var songsDeferred = when.all(deferreds);
+
+      _.each(songs, function(trackUrl, i) {
+        var url = 'http://www.rdio.com/api/oembed/';
+        var params = {format: 'json', url: trackUrl};
+        url += '?'+querystring.stringify(params);
+
+        request(url, function(err, rdioResp, oEmbedData) {
+          if(err) {
+            deferreds[i].reject(err);
+          } else {
+            deferreds[i].resolve(oEmbedData);
+          }
+        });
+      });
+
+      songsDeferred.then(function(results) {
+        console.log(results);
+        var songEmbeds = _.map(results, function(track) {
+          var trackData;
+
+          try {
+            trackData = JSON.parse(track);
+          } catch (e) {
+            console.log(e);
+          }
+          return trackData;
+        });
+        songEmbeds = _.compact(songEmbeds);
+        res.render('rdio', {oEmbeddedContent: songEmbeds});
+      });
+    });
+  } else {
+    res.redirect('/');
+  }
+});
+
 app.get('/singly/videos', function(req, res) {
   var token = req.session.accessToken;
   if(token) {
@@ -143,10 +201,6 @@ app.get('/singly/videos', function(req, res) {
         html = _.compact(html);
         res.render('oembed', {oEmbeddedContent: html.join('\n')});
       });
-
-      function returnDeferred() {
-        return new Deferred();
-      }
 
     });
   } else {

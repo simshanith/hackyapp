@@ -1,0 +1,12 @@
+extends layout
+
+block mainContent
+	#rdio-page
+	- if (oEmbeddedContent)
+		- each song in oEmbeddedContent
+			.rdio-song
+				h3= song.title
+				.rdio-widget
+					img(src=song.thumbnail_url)
+					!= song.html
+		
