@@ -78,6 +78,9 @@ h1 {
 #auth li.ico-twitter {
   background-image: url("/img/icons/ico-twitter.png");
 }
+#auth li.ico-rdio {
+  background-image: url("/img/icons/ico-rd.png");
+}
 #auth li.ico-media {
   background-image: url("/img/icons/ico-media.png");
 }
