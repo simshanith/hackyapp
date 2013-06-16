@@ -100,6 +100,10 @@ app.get('/', function(req, res) {
   });
 });
 
+app.get('/dashboard', function(req, res) {
+  res.render('dashboard', {});
+});
+
 app.get('/singly/videos', function(req, res) {
   var token = req.session.accessToken;
   if(token) {
@@ -120,7 +124,7 @@ app.get('/singly/videos', function(req, res) {
 
       new embedly({key: EMBEDLY_KEY}, function(err, api) {
         _.each(videos, function(videoUrl, i, videos) {
-          api.oembed({url:videoUrl}, function(err, oEmbedResp) {
+          api.oembed({url:videoUrl, maxwidth: 600}, function(err, oEmbedResp) {
             if(err) {
               deferreds[i].reject(err);
             } else {
@@ -136,7 +140,8 @@ app.get('/singly/videos', function(req, res) {
           var obj = _.first(videoEntry);
           return obj && obj.html;
         });
-        res.render('oembed', {oEmbeddedContent: html});
+        html = _.compact(html);
+        res.render('oembed', {oEmbeddedContent: html.join('\n')});
       });
 
       function returnDeferred() {
